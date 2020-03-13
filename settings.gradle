@@ -1,0 +1,5 @@
+rootProject.name = 'wr'
+include 'parser'
+include 'api-service'
+include 'wardrobe-commons'
+
