@@ -1,4 +1,4 @@
-package com.parser.repository;
+package com.api.repository;
 
 import com.commons.model.Item;
 import org.springframework.data.jpa.repository.JpaRepository;

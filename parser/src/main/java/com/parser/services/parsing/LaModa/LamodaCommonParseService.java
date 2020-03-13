@@ -1,11 +1,11 @@
 package com.parser.services.parsing.LaModa;
 
-import com.parser.model.common.Category;
+import com.commons.model.common.Category;
+import com.commons.services.utils.PathUtil;
+import com.commons.services.utils.RandomUtils;
 import com.parser.repository.WardrobeRepository;
 import com.parser.services.parsing.CommonParseService;
 import com.parser.services.parsing.ItemService;
-import com.parser.services.parsing.utils.PathUtil;
-import com.parser.services.parsing.utils.RandomUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;

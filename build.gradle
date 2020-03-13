@@ -27,3 +27,4 @@ task runAll{
 }
 
 runAll.dependsOn ':parser:bootRun'
+runAll.dependsOn ':api-service:bootRun'
