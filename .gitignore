@@ -7,7 +7,6 @@
 .gradle/
 /out/
 /target/
-/build/
 application-prod.properties
 
 # Log file

@@ -1,8 +1,10 @@
 plugins {
     id 'java'
-    id 'war'
-    
 }
+
+version 'unspecified'
+
+sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
@@ -11,16 +13,11 @@ repositories {
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
-springBoot {
-    mainClassName 'com.parser.App'
-}
-
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.flywaydb:flyway-core'
-    compile project(':wardrobe-commons')
-    compile group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
-    compile group: 'org.jsoup', name: 'jsoup', version: '1.11.3'
+    
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
 }
