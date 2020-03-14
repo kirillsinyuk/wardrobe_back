@@ -34,7 +34,27 @@ public class ItemService {
     public void createAndSaveItem(String fullItemPath){
         Document document  = commonParseService.getDocument(fullItemPath);
         RandomUtils.threadSleepRandom();
+        Item item = parseItem(document, fullItemPath);
+        if (Objects.nonNull(item)) {
+            wardrobeRepository.save(item);
+            log.info("Created entity {}", item.getDescription());
+        } else {
+            log.warn("Entity not created:\n" + fullItemPath);
+        }
+    }
+
+    public void updateItem(String fullItemPath, Item item){
+        Document document  = commonParseService.getDocument(fullItemPath);
+        RandomUtils.threadSleepRandom();
         parseItem(document, fullItemPath);
+        Item newItem = parseItem(document, fullItemPath);
+        if (Objects.nonNull(newItem)) {
+            newItem.setId(item.getId());
+            wardrobeRepository.save(item);
+            log.info("Updated entity {}", item.getDescription());
+        } else {
+            log.warn("Entity not updated:\n" + fullItemPath);
+        }
     }
 
     private Item parseItem(Document document, String fullItemPath){
@@ -46,8 +66,6 @@ public class ItemService {
             item.setSex(Sex.getCategoryByDescriptionList(categories));
             fillItem(document, item, fullItemPath);
             fillSubItemFields(item, categories);
-            wardrobeRepository.saveAndFlush(item);
-            log.info("Created entity {}", item.getDescription());
         }
         return item;
     }

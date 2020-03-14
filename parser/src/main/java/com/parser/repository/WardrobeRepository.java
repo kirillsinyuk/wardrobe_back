@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface WardrobeRepository extends JpaRepository<Item, Long>, JpaSpecificationExecutor<Item> {
+    Item getItemByItemPath(String itemPath);
 }

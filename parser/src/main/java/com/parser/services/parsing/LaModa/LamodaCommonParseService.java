@@ -1,21 +1,25 @@
 package com.parser.services.parsing.LaModa;
 
+import com.commons.model.Item;
 import com.commons.model.common.Category;
 import com.commons.services.utils.PathUtil;
 import com.commons.services.utils.RandomUtils;
 import com.parser.repository.WardrobeRepository;
 import com.parser.services.parsing.CommonParseService;
 import com.parser.services.parsing.ItemService;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @Service
+@Slf4j
 public class LamodaCommonParseService {
 
     @Value("${lamoda.root}")
@@ -28,11 +32,23 @@ public class LamodaCommonParseService {
     @Autowired
     WardrobeRepository wardrobeRepository;
 
-    private void createAndSaveClothesItemsFromPage(Document page) {
+    @Scheduled(cron = "0 0 23 0 0 0")
+    public void getItems(){
+        log.info("Starting parsing");
+        entityCreator("https://www.lamoda.ru/c/15/shoes-women/");
+        log.info("Parsing ended successful");
+    }
+
+    private void saveClothesItemsFromPage(Document page) {
         Elements baseElement = page.getElementsByClass("products-list-item");
         for (Element el: baseElement) {
             String itemPath = PathUtil.getFullPathFromHref(el.getElementsByClass("products-list-item__link").attr("href"), laModaRoot);
-            itemService.createAndSaveItem(itemPath);
+            Item item = wardrobeRepository.getItemByItemPath(itemPath);
+            if(item == null){
+                itemService.createAndSaveItem(itemPath);
+            } else {
+                itemService.updateItem(itemPath, item);
+            }
         }
     }
 
@@ -54,7 +70,7 @@ public class LamodaCommonParseService {
 
         Arrays.stream(Category.values())
                 .map(x-> getAllItemPagesFromUrl(paths.get(x)))
-                .forEach(x-> x.forEach(this::createAndSaveClothesItemsFromPage));
+                .forEach(x-> x.forEach(this::saveClothesItemsFromPage));
 
     }
 

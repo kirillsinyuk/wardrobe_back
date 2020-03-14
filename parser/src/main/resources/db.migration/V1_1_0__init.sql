@@ -9,3 +9,5 @@ CREATE TABLE IF NOT EXISTS items (
   item_path VARCHAR(255),
   img_path VARCHAR(255))
   ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE INDEX fullPath ON items(item_path);
