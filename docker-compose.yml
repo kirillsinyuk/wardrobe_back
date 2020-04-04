@@ -1,0 +1,26 @@
+version: '2'
+services:
+  jm-api-service:
+    image: api-service
+    build: /home/kirill/wr/api-service/src/main/docker
+    ports:
+    - "8080:8080"
+    depends_on:
+    - jm-mysql
+  jm-parser:
+    image: parser
+    build: /home/kirill/wr/parser/src/main/docker
+    ports:
+      - "8070:8070"
+    depends_on:
+      - jm-mysql
+  jm-mysql:
+    image: mysql:8
+    ports:
+     - "5431:5432"
+    environment:
+     - MYSQL_ROOT_PASSWORD=root
+     - MYSQL_ROOT_USER=root
+     - MYSQL_DB=mydb
+
+

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>groupId</groupId>
+    <artifactId>wr.api-service</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+
+
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+        <spring.version>2.2.5.RELEASE</spring.version>
+        <lombok.version>1.18.10</lombok.version>
+    </properties>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>groupId</groupId>
+            <artifactId>wr.wardrobe-commons</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>/home/kirill/wr/wardrobe-commons/target/wr.wardrobe-commons-1.0-SNAPSHOT.jar</systemPath>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-parent -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-parent</artifactId>
+            <version>${spring.version}</version>
+            <type>pom</type>
+        </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-jpa -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.19</version>
+        </dependency>
+
+
+    </dependencies>
+
+    <build>
+
+        <finalName>api-service</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.2.6.RELEASE</version>
+                <configuration>
+                    <mainClass>com.api.ApiApp</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.20.1</version>
+                <configuration>
+                    <images>
+                        <image>
+                            <name>api-service</name>
+                            <build>
+                                <dockerFileDir>${project.basedir}/src/main/docker</dockerFileDir>
+                                <assembly>
+                                    <mode>dir</mode>
+                                    <targetDir>/api-service</targetDir>
+                                    <descriptor>${project.basedir}/src/main/docker/assembly.xml</descriptor>
+                                </assembly>
+                            </build>
+                        </image>
+                    </images>
+                    <!--<dockerHost>http://localhost:5050</dockerHost>-->
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>build</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
