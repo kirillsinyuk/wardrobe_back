@@ -1,7 +1,7 @@
 version: '2'
 services:
 
-  mysql:
+  mysql-docker-container:
     image: mysql:8
     volumes:
       - ./db_init:/docker-entrypoint-initdb.d
@@ -18,18 +18,20 @@ services:
 
   jm-api-service:
     image: api-service
+    command: ["./wait-for-it.sh", "mysql-docker-container:3306", "--", "java", "-jar", "api-service.jar"]
     ports:
     - 8080:8080
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/wardrobe_test?autoReconnect=true&allowPublicKeyRetrieval=true&useSSL=false
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-docker-container:3306/wardrobe_test?autoReconnect=true&allowPublicKeyRetrieval=true&useSSL=false
     depends_on:
-    - mysql
+    - mysql-docker-container
 
   jm-parser:
     image: parser
+    command: ["./wait-for-it.sh", "mysql-docker-container:3306", "--", "java", "-jar", "parser.jar"]
     ports:
       - 8070:8070
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/wardrobe_test?autoReconnect=true&allowPublicKeyRetrieval=true&useSSL=false
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-docker-container:3306/wardrobe_test?autoReconnect=true&allowPublicKeyRetrieval=true&useSSL=false
     depends_on:
-      - mysql
+      - mysql-docker-container
