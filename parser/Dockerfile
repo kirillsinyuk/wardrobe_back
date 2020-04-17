@@ -2,6 +2,7 @@ FROM openjdk:8-jre
 WORKDIR /parser
 VOLUME ["/parser"]
 COPY target/parser.jar .
+COPY wait-for-it.sh .
 CMD ["java", "-jar", "parser.jar"]
 
 #FROM openjdk:8-jdk-alpine

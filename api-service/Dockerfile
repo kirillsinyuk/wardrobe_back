@@ -1,7 +1,8 @@
-FROM openjdk:8u171-jre-alpine
+FROM openjdk:8-jre
 WORKDIR /api-service
 VOLUME ["/api-service"]
-ADD target/api-service.jar .
+COPY target/api-service.jar .
+COPY wait-for-it.sh .
 CMD ["java", "-jar", "api-service.jar"]
 
 #FROM openjdk:8-jdk-alpine
