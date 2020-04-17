@@ -18,7 +18,6 @@ services:
 
   jm-api-service:
     image: api-service
-    build: /home/kirill/wr/api-service
     ports:
     - 8080:8080
     environment:
@@ -28,7 +27,6 @@ services:
 
   jm-parser:
     image: parser
-    build: /home/kirill/wr/parser
     ports:
       - 8070:8070
     environment:
