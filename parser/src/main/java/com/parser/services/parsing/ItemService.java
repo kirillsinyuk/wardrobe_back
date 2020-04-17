@@ -90,7 +90,7 @@ public class ItemService {
         } else if (item instanceof Clothes){
             ((Clothes) item).setClothesSubCategory(ClothesSubCategory.getSubCategoryByDescriptionList(categories));
         } else if(item instanceof Accsessoires) {
-
+            //TODO add accesoires
         }
     }
 

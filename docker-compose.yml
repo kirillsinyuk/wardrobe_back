@@ -1,26 +1,37 @@
 version: '2'
 services:
+
+  mysql:
+    image: mysql:8
+    volumes:
+      - ./db_init:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_USER: root
+      MYSQL_ROOT_PASSWORD: 1111
+      MYSQL_DATABASE: wardrobe_test
+      MYSQL_USER: test_dev
+      MYSQL_PASSWORD: longpassword
+    ports:
+      - 3307:3306
+    security_opt:
+      - seccomp:unconfined
+
   jm-api-service:
     image: api-service
-    build: /home/kirill/wr/api-service/src/main/docker
+    build: /home/kirill/wr/api-service
     ports:
-    - "8080:8080"
+    - 8080:8080
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/wardrobe_test?autoReconnect=true&allowPublicKeyRetrieval=true&useSSL=false
     depends_on:
-    - jm-mysql
+    - mysql
+
   jm-parser:
     image: parser
-    build: /home/kirill/wr/parser/src/main/docker
+    build: /home/kirill/wr/parser
     ports:
-      - "8070:8070"
-    depends_on:
-      - jm-mysql
-  jm-mysql:
-    image: mysql:8
-    ports:
-     - "5431:5432"
+      - 8070:8070
     environment:
-     - MYSQL_ROOT_PASSWORD=root
-     - MYSQL_ROOT_USER=root
-     - MYSQL_DB=mydb
-
-
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/wardrobe_test?autoReconnect=true&allowPublicKeyRetrieval=true&useSSL=false
+    depends_on:
+      - mysql

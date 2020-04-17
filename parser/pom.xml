@@ -20,6 +20,14 @@
         <jsoup.version>1.12.1</jsoup.version>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>localrep</id>
+            <name>local repository</name>
+            <url>file:${project.basedir}/lib</url>
+        </repository>
+    </repositories>
+
     <dependencies>
 
         <!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
@@ -29,13 +37,11 @@
             <version>${jsoup.version}</version>
         </dependency>
 
-        <!--<dependency>-->
-            <!--<groupId>groupId</groupId>-->
-            <!--<artifactId>wr.wardrobe-commons</artifactId>-->
-            <!--<version>1.0-SNAPSHOT</version>-->
-            <!--<scope>system</scope>-->
-            <!--<systemPath>/home/kirill/wr/wardrobe-commons/target/wr.wardrobe-commons-1.0-SNAPSHOT.jar</systemPath>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>groupId</groupId>
+            <artifactId>wr.wardrobe-commons</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
         <dependency>
@@ -52,7 +58,6 @@
             <version>${spring.version}</version>
             <type>pom</type>
         </dependency>
-
 
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-jpa -->
         <dependency>
@@ -75,11 +80,15 @@
             <version>8.0.19</version>
         </dependency>
 
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.3.1</version>
+        </dependency>
 
     </dependencies>
 
     <build>
-
         <finalName>parser</finalName>
         <plugins>
             <plugin>
@@ -93,36 +102,6 @@
                     <execution>
                         <goals>
                             <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>io.fabric8</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <version>0.20.1</version>
-                <configuration>
-                    <images>
-                        <image>
-                            <name>parser</name>
-                            <build>
-                                <dockerFileDir>${project.basedir}/src/main/docker</dockerFileDir>
-                                <assembly>
-                                    <mode>dir</mode>
-                                    <targetDir>/api-service</targetDir>
-                                    <descriptor>${project.basedir}/src/main/docker/assembly.xml</descriptor>
-                                </assembly>
-                            </build>
-                        </image>
-                    </images>
-                    <!--<dockerHost>http://localhost:5050</dockerHost>-->
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>build</id>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>build</goal>
                         </goals>
                     </execution>
                 </executions>
