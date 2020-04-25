@@ -52,6 +52,7 @@ public class LamodaCommonParseService {
         }
     }
 
+    //only first 5 pages for test
     private List<Document> getAllItemPagesFromUrl(String url) {
         List<Document> pages = new ArrayList<>();
         int counter = 1;
@@ -65,7 +66,7 @@ public class LamodaCommonParseService {
         return pages;
     }
 
-    public void entityCreator(String url) {
+    private void entityCreator(String url) {
         Map<Category, String> paths = getClothesCategoryPaths(url);
 
         Arrays.stream(Category.values())

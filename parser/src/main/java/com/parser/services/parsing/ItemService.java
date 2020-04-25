@@ -27,9 +27,9 @@ import java.util.stream.Collectors;
 public class ItemService {
 
     @Autowired
-    CommonParseService commonParseService;
+    private CommonParseService commonParseService;
     @Autowired
-    WardrobeRepository wardrobeRepository;
+    private WardrobeRepository wardrobeRepository;
 
     public void createAndSaveItem(String fullItemPath){
         Document document  = commonParseService.getDocument(fullItemPath);
